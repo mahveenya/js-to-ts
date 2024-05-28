@@ -2,15 +2,14 @@ import js from '@eslint/js';
 import ts from 'typescript-eslint';
 import globals from 'globals';
 import eslintConfigPrettier from 'eslint-config-prettier';
-import prettier from 'eslint-plugin-prettier/recommended';
+import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
 import importPlugin from 'eslint-plugin-import';
 
 export default [
-  js.configs.recommended,
-  ...ts.configs.strict,
-  ...ts.configs.stylistic,
+    js.configs.recommended,
+    ts.configs.recommended,
     eslintConfigPrettier,
-    ...prettier,
+    eslintPluginPrettierRecommended,
     {
         languageOptions: {
             globals: {
@@ -19,12 +18,11 @@ export default [
                 ...globals.node,
             },
             parserOptions: {
-              ecmaVersion: 2020,
-              sourceType: "module"
-          }
+                ecmaVersion: 2020,
+                sourceType: 'module',
+            },
         },
         plugins: {
-            prettier,
             importPlugin,
         },
         rules: {

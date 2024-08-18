@@ -1,5 +1,5 @@
 import './news.css';
-import { Article } from '../interfaces.js';
+import { Article } from '../../interfaces.js';
 
 export default class News {
     draw(data: Article[]): void {

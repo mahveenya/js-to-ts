@@ -1,5 +1,5 @@
 import './sources.css';
-import { Source } from '../interfaces.js';
+import { Source } from '../../interfaces.js';
 
 export default class Sources {
     draw(data: Source[]): void {

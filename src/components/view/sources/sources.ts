@@ -1,16 +1,7 @@
 import './sources.css';
+import { Source } from '../interfaces.js';
 
-interface Source {
-    id: string;
-    name: string;
-    description: string;
-    url: string;
-    category: string;
-    language: string;
-    country: string;
-}
-
-class Sources {
+export default class Sources {
     draw(data: Source[]): void {
         const fragment = document.createDocumentFragment() as DocumentFragment;
         const sourceItemTemp = document.querySelector('#sourceItemTemp') as HTMLTemplateElement;
@@ -31,5 +22,3 @@ class Sources {
         sources.append(fragment);
     }
 }
-
-export default Sources;

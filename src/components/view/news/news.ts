@@ -1,20 +1,7 @@
 import './news.css';
+import { Article } from '../interfaces.js';
 
-interface Article {
-    source: {
-        id: string;
-        name: string;
-    };
-    author: string;
-    title: string;
-    description: string;
-    url: string;
-    urlToImage: string;
-    publishedAt: string;
-    content: string;
-}
-
-class News {
+export default class News {
     draw(data: Article[]): void {
         const news: Article[] = data.length >= 10 ? data.filter((_item: Article, idx: number): boolean => idx < 10) : data;
 
@@ -60,5 +47,3 @@ class News {
         newsElem.appendChild(fragment);
     }
 }
-
-export default News;

@@ -1,37 +1,40 @@
 import AppLoader from './appLoader';
+import { Callback } from '../types';
+import { Endpoints } from '../enums';
+import { SourcesReqParams, NewsReqParams } from '../interfaces';
 
 class AppController extends AppLoader {
-    getSources(callback) {
-        super.getResp(
-            {
-                endpoint: 'sources',
-            },
-            callback
-        );
+    getSources(callback: Callback): void {
+        const reqParams: SourcesReqParams = {
+            endpoint: Endpoints.SOURCES,
+        };
+        super.getResp(reqParams, callback);
     }
 
-    getNews(e, callback) {
-        let target = e.target;
-        const newsContainer = e.currentTarget;
+    getNews(e: MouseEvent, callback: Callback): void {
+        let target = e.target as Element;
+        const newsContainer = e.currentTarget as Element;
 
         while (target !== newsContainer) {
             if (target.classList.contains('source__item')) {
-                const sourceId = target.getAttribute('data-source-id');
-                if (newsContainer.getAttribute('data-source') !== sourceId) {
+                const sourceId: string | null = target.getAttribute('data-source-id');
+                const newsContainerDataSource: string | null = newsContainer.getAttribute('data-source');
+
+                if (sourceId && newsContainerDataSource !== sourceId) {
                     newsContainer.setAttribute('data-source', sourceId);
-                    super.getResp(
-                        {
-                            endpoint: 'everything',
-                            options: {
-                                sources: sourceId,
-                            },
+
+                    const reqParams: NewsReqParams = {
+                        endpoint: Endpoints.EVERYTHING,
+                        options: {
+                            sources: sourceId,
                         },
-                        callback
-                    );
+                    };
+
+                    super.getResp(reqParams, callback);
                 }
                 return;
             }
-            target = target.parentNode;
+            target = target.parentNode as Element;
         }
     }
 }

@@ -1,3 +1,1 @@
-import { Data } from "./interfaces";
-
-export type Callback = (data: Data) => void;
+export type Callback<T> = (data: T) => void;

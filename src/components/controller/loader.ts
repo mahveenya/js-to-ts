@@ -12,13 +12,13 @@ class Loader {
         this.options = options;
     }
 
-    getResp(
+    getResp<T>(
         { endpoint, options = {} }: ReqParams,
-        callback: Callback = (): void => {
+        callback: Callback<T> = (): void => {
             console.error('No callback for GET response');
         }
     ): void {
-        const loadReqParams: LoadReqParams = {
+        const loadReqParams: LoadReqParams<T> = {
             method: Methods.GET,
             endpoint,
             callback,
@@ -49,7 +49,7 @@ class Loader {
         return url.slice(0, -1);
     }
 
-    load({ method, endpoint, callback, options = {} }: LoadReqParams): void {
+    load<T>({ method, endpoint, callback, options = {} }: LoadReqParams<T>): void {
         fetch(this.makeUrl({ options, endpoint }), { method })
             .then(this.errorHandler)
             .then((res) => res.json())

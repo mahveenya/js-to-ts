@@ -29,11 +29,14 @@ export interface Article {
   content: string;
 }
 
-export interface Data {
+export interface SourcesData {
   status: string;
-  totalResults?: number;
-  articles?: Article[];
-  sources?: Source[];
+  totalResults: number;
+  sources: Source[];
+}
+export interface NewsData {
+  status: string;
+  articles: Article[];
 }
 
 interface ReqOptions {
@@ -56,9 +59,9 @@ export interface NewsReqParams {
   options: ReqOptions;
 }
 
-export interface LoadReqParams {
+export interface LoadReqParams<T> {
     method: Methods;
     endpoint: Endpoints;
-    callback: Callback;
+    callback: Callback<T>;
     options: Partial<ReqOptions>;
 }

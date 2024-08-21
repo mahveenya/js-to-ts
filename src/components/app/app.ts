@@ -1,6 +1,7 @@
 import AppController from '../controller/controller';
 import { AppView } from '../view/appView';
 import { Callback } from '../types';
+import { NewsData, SourcesData } from '../interfaces';
 
 
 class App {
@@ -13,8 +14,8 @@ class App {
 
     start(): void {
         const sources = document.querySelector('.sources') as HTMLDivElement;
-        const drawNewsCb: Callback = (data) => this.view.drawNews(data);
-        const drawSourcesCb: Callback = (data) => this.view.drawSources(data);
+        const drawNewsCb: Callback<NewsData> = (data) => this.view.drawNews(data);
+        const drawSourcesCb: Callback<SourcesData> = (data) => this.view.drawSources(data);
         sources.addEventListener('click', (e: MouseEvent): void => this.controller.getNews(e, drawNewsCb));
         this.controller.getSources(drawSourcesCb);
     }

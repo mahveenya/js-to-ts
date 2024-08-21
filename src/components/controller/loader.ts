@@ -1,19 +1,39 @@
+import { Methods } from '../enums';
+import { ReqParams, SourcesReqParams, NewsReqParams, LoadReqParams } from '../interfaces';
+import { Callback } from '../types';
+
+interface APIKey {
+    apiKey: string;
+}
+
+type urlOptions = APIKey & Record<string, string>;
+
+type GetRes<T extends SourcesReqParams | NewsReqParams> = T extends NewsReqParams ? NewsReqParams : ReqParams;
+
 class Loader {
-    constructor(baseLink, options) {
+    private readonly baseLink: string;
+    private readonly options: APIKey;
+    constructor(baseLink: string, options: APIKey) {
         this.baseLink = baseLink;
         this.options = options;
     }
 
     getResp(
-        { endpoint, options = {} },
-        callback = () => {
+        { endpoint, options = {} }: ReqParams,
+        callback: Callback = (): void => {
             console.error('No callback for GET response');
         }
-    ) {
-        this.load('GET', endpoint, callback, options);
+    ): void {
+        const loadReqParams: LoadReqParams = {
+            method: Methods.GET,
+            endpoint,
+            callback,
+            options,
+        };
+        this.load(loadReqParams);
     }
 
-    errorHandler(res) {
+    errorHandler(res: Response): Response {
         if (!res.ok) {
             if (res.status === 401 || res.status === 404)
                 console.log(`Sorry, but there is ${res.status} error: ${res.statusText}`);
@@ -23,8 +43,8 @@ class Loader {
         return res;
     }
 
-    makeUrl(options, endpoint) {
-        const urlOptions = { ...this.options, ...options };
+    makeUrl({ options, endpoint }: ReqParams): string {
+        const urlOptions: urlOptions = { ...this.options, ...options };
         let url = `${this.baseLink}${endpoint}?`;
 
         Object.keys(urlOptions).forEach((key) => {
@@ -34,12 +54,12 @@ class Loader {
         return url.slice(0, -1);
     }
 
-    load(method, endpoint, callback, options = {}) {
-        fetch(this.makeUrl(options, endpoint), { method })
+    load({ method, endpoint, callback, options = {} }: LoadReqParams): void {
+        fetch(this.makeUrl({ options, endpoint }), { method })
             .then(this.errorHandler)
             .then((res) => res.json())
             .then((data) => callback(data))
-            .catch((err) => console.error(err));
+            .catch((err: Error) => console.error(err));
     }
 }
 

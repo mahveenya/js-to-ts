@@ -1,4 +1,5 @@
-import { Endpoints } from './enums';
+import { Endpoints, Methods } from './enums';
+import { Callback } from './types';
 
 export interface Source {
     id: string;
@@ -31,13 +32,27 @@ export interface Data {
     sources?: Source[];
 }
 
+interface ReqOptions {
+    sources: string;
+}
+
+export interface ReqParams {
+    endpoint: Endpoints;
+    options?: Partial<ReqOptions>;
+}
+
 export interface SourcesReqParams {
     endpoint: Endpoints;
 }
 
 export interface NewsReqParams {
     endpoint: Endpoints;
-    options: {
-        sources: string;
-    };
+    options: ReqOptions;
+}
+
+export interface LoadReqParams {
+    method: Methods;
+    endpoint: Endpoints;
+    callback: Callback;
+    options: Partial<ReqOptions>;
 }

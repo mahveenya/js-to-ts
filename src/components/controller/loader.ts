@@ -2,8 +2,6 @@ import { Methods } from '../enums';
 import { ReqParams, SourcesReqParams, NewsReqParams, LoadReqParams, APIKey, URLOptions } from '../interfaces';
 import { Callback } from '../types';
 
-type GetRes<T extends SourcesReqParams | NewsReqParams> = T extends NewsReqParams ? NewsReqParams : ReqParams;
-
 class Loader {
     private readonly baseLink: string;
     private readonly options: APIKey;
@@ -40,7 +38,7 @@ class Loader {
     makeUrl({ options, endpoint }: ReqParams): string {
         const urlOptions: URLOptions = { ...this.options, ...options };
         let url: string = `${this.baseLink}${endpoint}?`;
-        const urlOptionsKeys = Object.keys(urlOptions) as (keyof URLOptions)[]
+        const urlOptionsKeys = Object.keys(urlOptions) as (keyof URLOptions)[];
 
         urlOptionsKeys.forEach((key: keyof URLOptions): void => {
             url += `${key}=${urlOptions[key]}&`;

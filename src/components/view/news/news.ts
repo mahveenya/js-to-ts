@@ -3,7 +3,8 @@ import { Article } from '../../interfaces.js';
 
 export default class News {
     draw(data: Article[]): void {
-        const news: Article[] = data.length >= 10 ? data.filter((_item: Article, idx: number): boolean => idx < 10) : data;
+        const news: Article[] =
+            data.length >= 10 ? data.filter((_item: Article, idx: number): boolean => idx < 10) : data;
 
         const fragment = document.createDocumentFragment() as DocumentFragment;
         const newsItemTemp = document.querySelector('#newsItemTemp') as HTMLTemplateElement;

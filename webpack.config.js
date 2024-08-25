@@ -14,10 +14,10 @@ const baseConfig = {
                 use: ['style-loader', 'css-loader'],
             },
             {
-              test: /\.ts$/i,
-              use: ['ts-loader'],
-              include: [path.resolve(__dirname, './src')]
-            }
+                test: /\.ts$/i,
+                use: ['ts-loader'],
+                include: [path.resolve(__dirname, './src')],
+            },
         ],
     },
     resolve: {

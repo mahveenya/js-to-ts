@@ -7,9 +7,10 @@ import importPlugin from 'eslint-plugin-import';
 
 export default [
     js.configs.recommended,
-    ts.configs.recommended,
+    ...ts.configs.recommended,
     eslintConfigPrettier,
     eslintPluginPrettierRecommended,
+    { files: ['**/*.ts'] },
     {
         languageOptions: {
             globals: {
@@ -27,7 +28,7 @@ export default [
         },
         rules: {
             'no-debugger': 'off',
-            'no-console': 'off',
+            'no-console': 0,
             'class-methods-use-this': 'off',
         },
     },

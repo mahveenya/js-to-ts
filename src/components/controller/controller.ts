@@ -1,17 +1,17 @@
 import AppLoader from './appLoader';
-import { Callback } from '../types';
+import { DrawNewsCb, DrawSourcesCb } from '../types';
 import { Endpoints } from '../enums';
-import { SourcesReqParams, NewsReqParams, SourcesData, NewsData } from '../interfaces';
+import { SourcesReqParams, NewsReqParams } from '../interfaces';
 
 class AppController extends AppLoader {
-    getSources(callback: Callback<SourcesData>): void {
+    getSources(callback: DrawSourcesCb): void {
         const reqParams: SourcesReqParams = {
             endpoint: Endpoints.SOURCES,
         };
         super.getResp(reqParams, callback);
     }
 
-    getNews(e: MouseEvent, callback: Callback<NewsData>): void {
+    getNews(e: MouseEvent, callback: DrawNewsCb): void {
         let target = e.target as Element;
         const newsContainer = e.currentTarget as Element;
 

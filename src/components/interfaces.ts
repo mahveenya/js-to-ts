@@ -2,7 +2,7 @@ import { Endpoints, Methods } from './enums';
 import { Callback } from './types';
 
 export interface APIKey {
-    apiKey: string;
+    readonly apiKey: string;
 }
 
 export interface Source {

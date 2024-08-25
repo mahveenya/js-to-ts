@@ -3,8 +3,8 @@ import Sources from './sources/sources';
 import { Article, NewsData, Source, SourcesData } from '../interfaces';
 
 export class AppView {
-    news: News;
-    sources: Sources;
+    protected news: News;
+    protected sources: Sources;
     constructor() {
         this.news = new News();
         this.sources = new Sources();

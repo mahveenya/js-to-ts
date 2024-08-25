@@ -1,5 +1,5 @@
 import { Methods } from '../enums';
-import { ReqParams, SourcesReqParams, NewsReqParams, LoadReqParams, APIKey, URLOptions } from '../interfaces';
+import { ReqParams, LoadReqParams, APIKey, URLOptions } from '../interfaces';
 import { Callback } from '../types';
 
 class Loader {
@@ -45,14 +45,19 @@ class Loader {
         });
 
         return url.slice(0, -1);
+        // this func could've been more simple:
+        // makeUrl({ options, endpoint }: ReqParams): URL
+        // const urlSearchParams: URLSearchParams = new URLSearchParams({ ...this.options, ...options });
+        // let url: URL = new URL(`${this.baseLink}${endpoint}?${urlSearchParams.toString()}`)
+        // return url
     }
 
     load<T>({ method, endpoint, callback, options = {} }: LoadReqParams<T>): void {
         fetch(this.makeUrl({ options, endpoint }), { method })
             .then(this.errorHandler)
-            .then((res) => res.json())
-            .then((data) => callback(data))
-            .catch((err: Error) => console.error(err));
+            .then((res: Response): Promise<T> => res.json())
+            .then((data: T): void => callback(data))
+            .catch((err: Error): void => console.error(err));
     }
 }
 

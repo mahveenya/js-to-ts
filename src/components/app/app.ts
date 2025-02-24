@@ -1,15 +1,7 @@
-import AppController from '../controller/controller';
-import { AppView } from '../view/appView';
 import { NewsCb, SourcesCb } from '../types';
+import BaseApp from './baseApp';
 
-class App {
-    protected controller: AppController;
-    protected view: AppView;
-    constructor() {
-        this.controller = new AppController();
-        this.view = new AppView();
-    }
-
+class App extends BaseApp {
     start(): void {
         const sources = document.querySelector('.sources') as HTMLDivElement;
         const newsCb: NewsCb = (data) => this.view.drawNews(data);

@@ -1,6 +1,6 @@
 import AppController from '../controller/controller';
 import { AppView } from '../view/appView';
-import { DrawNewsCb, DrawSourcesCb } from '../types';
+import { NewsCb, SourcesCb } from '../types';
 
 class App {
     protected controller: AppController;
@@ -12,10 +12,10 @@ class App {
 
     start(): void {
         const sources = document.querySelector('.sources') as HTMLDivElement;
-        const drawNewsCb: DrawNewsCb = (data): void => this.view.drawNews(data);
-        const drawSourcesCb: DrawSourcesCb = (data): void => this.view.drawSources(data);
-        sources.addEventListener('click', (e: MouseEvent): void => this.controller.getNews(e, drawNewsCb));
-        this.controller.getSources(drawSourcesCb);
+        const newsCb: NewsCb = (data) => this.view.drawNews(data);
+        const sourcesCb: SourcesCb = (data) => this.view.drawSources(data);
+        sources.addEventListener('click', (e: MouseEvent): void => this.controller.getNews(e, newsCb));
+        this.controller.getSources(sourcesCb);
     }
 }
 

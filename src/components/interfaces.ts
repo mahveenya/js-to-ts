@@ -1,5 +1,5 @@
 import { Endpoints, Methods } from './enums';
-import { Callback } from './types';
+import { NewsOrSourcesCb } from './types';
 
 export interface APIKey {
     readonly apiKey: string;
@@ -59,9 +59,7 @@ export interface NewsReqParams {
     options: ReqOptions;
 }
 
-export interface LoadReqParams<T> {
+export interface LoadReqParams<T> extends Required<ReqParams> {
     method: Methods;
-    endpoint: Endpoints;
-    callback: Callback<T>;
-    options: Partial<ReqOptions>;
+    callback: NewsOrSourcesCb<T>;
 }

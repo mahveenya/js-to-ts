@@ -1,6 +1,6 @@
 import { Methods } from '../enums';
 import { ReqParams, LoadReqParams, APIKey, URLOptions } from '../interfaces';
-import { Callback } from '../types';
+import { NewsCb, NewsOrSourcesCb, NewsOrSourcesData, SourcesCb } from '../types';
 
 class Loader {
     private readonly baseLink: string;
@@ -10,10 +10,10 @@ class Loader {
         this.options = options;
     }
 
-    getResp<T>(
+    getResp<T extends NewsCb | SourcesCb>(
         { endpoint, options = {} }: ReqParams,
-        callback: Callback<T> = (): void => {
-            console.error('No callback for GET response');
+        callback: NewsOrSourcesCb<T> = (): never => {
+            throw new Error('No callback for GET response');
         }
     ): void {
         const loadReqParams: LoadReqParams<T> = {
@@ -25,11 +25,11 @@ class Loader {
         this.load(loadReqParams);
     }
 
-    errorHandler(res: Response): Response {
+    errorHandler(res: Response): Response | never {
         if (!res.ok) {
             if (res.status === 401 || res.status === 404)
                 console.log(`Sorry, but there is ${res.status} error: ${res.statusText}`);
-            throw Error(res.statusText);
+            throw new Error(res.statusText);
         }
 
         return res;
@@ -45,19 +45,23 @@ class Loader {
         });
 
         return url.slice(0, -1);
-        // this func could've been more simple:
-        // makeUrl({ options, endpoint }: ReqParams): URL
-        // const urlSearchParams: URLSearchParams = new URLSearchParams({ ...this.options, ...options });
-        // let url: URL = new URL(`${this.baseLink}${endpoint}?${urlSearchParams.toString()}`)
-        // return url
     }
 
-    load<T>({ method, endpoint, callback, options = {} }: LoadReqParams<T>): void {
+    load<T extends NewsCb | SourcesCb>({ method, endpoint, callback, options = {} }: LoadReqParams<T>): void {
         fetch(this.makeUrl({ options, endpoint }), { method })
             .then(this.errorHandler)
-            .then((res: Response): Promise<T> => res.json())
-            .then((data: T): void => callback(data))
-            .catch((err: Error): void => console.error(err));
+            .then((res: Response): Promise<NewsOrSourcesData> => res.json())
+            .then((data: NewsOrSourcesData): void => {
+                if ('articles' in data) {
+                    (callback as NewsCb)(data);
+                }
+                if ('sources' in data) {
+                    (callback as SourcesCb)(data);
+                }
+            })
+            .catch((err: Error): never => {
+                throw err;
+            });
     }
 }
 

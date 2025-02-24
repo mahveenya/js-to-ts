@@ -50,12 +50,9 @@ export interface ReqParams {
     options?: Partial<ReqOptions>;
 }
 
-export interface SourcesReqParams {
-    endpoint: Endpoints;
-}
+export interface SourcesReqParams extends ReqParams {}
 
-export interface NewsReqParams {
-    endpoint: Endpoints;
+export interface NewsReqParams extends ReqParams {
     options: ReqOptions;
 }
 
